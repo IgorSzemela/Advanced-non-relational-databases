@@ -1,0 +1,294 @@
+
+---- STUDENTS ----------------------------------------
+
+db.students.insertMany([
+{
+	name : "Harry",
+	surname : "Potter",
+	date_of_birth : "2000-07-31",
+	gender : "male",
+	address : {
+		country : "England",
+		city : "London",
+		street : "Baker Street",
+		number : "201"	
+		},
+	house : "Gryffindor",
+	year : 2,
+	classes : [
+		{name : "transfiguration", grades : [3, 5, 3]},
+		{name : "potions", grades : [2, 3, 2.5] },
+		{name : "care of magical creatures", grades : [5, 5, 4]}
+	]
+},
+{
+	name : "Ginny",
+	surname : "Weasley",
+	date_of_birth : "2001-12-11",
+	gender : "female",
+	address : {
+		country : "England",
+		city : "Manchester",
+		street : "Long Street",
+		number : "111"	
+		},
+	house : "Gryffindor",
+	year : 1,
+	classes : [
+		{name : "transfiguration", grades : [4, 4]},
+		{name : "charms", grades : [4, 3] },
+		{name : "defence against the dark arts", grades : [5]}
+	]
+},
+{
+	name : "Cedric",
+	surname : "Diggory",
+	date_of_birth : "1998-05-05",
+	gender : "male",
+	address : {
+		country : "Sweden",
+		city : "Uppsala",
+		street : "Rabyvagen",
+		number : "9"	
+		},
+	house : "Hufflepuff",
+	year : 4,
+	classes : [
+		{name : "advanced transfiguration", grades : [4, 3]}
+	]
+},
+{
+	name : "Luna",
+	surname : "Lovegood",
+	date_of_birth : "1995-05-17",
+	gender : "female",
+	address : {
+		country : "Island",
+		city : "Reykiavik",
+		street : "Basendi",
+		number : "3"	
+		},
+	house : "Ravenclaw",
+	year : 6,
+	classes : [
+		{name : "defence against the dark arts", grades : [4.5]},
+		{name : "herbology", grades : [4, 3, 5] },
+		{name : "advanced transfiguration", grades : [5]},
+		{name : "advanced charms", grades : [3, 3.5]},
+	]
+},
+{
+	name : "Vincent",
+	surname : "Crabbe",
+	date_of_birth : "1994-08-23",
+	gender : "male",
+	address : {
+		country : "England",
+		city : "Scarborough",
+		street : "Avenue Rd",
+		number : "89"	
+		},
+	house : "Slytherin",
+	year : 7,
+	classes : [
+		{name : "defence against the dark arts", grades : [4, 3]},
+		{name : "potions", grades : [4, 2] }
+	]
+}
+])
+
+---- TEACHERS ----------------------------------------
+
+db.teachers.insertMany([
+{
+	name : "Minerva",
+	surname : "McGonagall",
+	date_of_birth : "1960-10-10",
+	gender : "female",
+	subjects : [ 
+		{name : "transfiguration"}, 
+		{name : "advanced transfiguration"}
+	]
+},
+{
+	name : "Severus",
+	surname : "Snape",
+	date_of_birth : "19671-09-23",
+	gender : "male",
+	subjects : [ 
+		{name : "potions"}, 
+		{name : "defence against the dark arts"}
+	]
+},
+{
+	name : "Pomona",
+	surname : "Sprout",
+	date_of_birth : "1990-02-12",
+	gender : "female",
+	subjects : [ 
+		{name : "herbology"}
+	]
+},
+{
+	name : "Filius",
+	surname : "Flitwick",
+	date_of_birth : "1962-12-30",
+	gender : "male",
+	subjects : [ 
+		{name : "charms"},
+		{name : "advanced charms"}]
+},
+{
+	name : "Cuthbert",
+	surname : "Binns",
+	date_of_birth : "1880-02-11",
+	gender : "male",
+	subjects : [ 
+		{name : "history of magic"}]
+},
+{
+	name : "Rubeus",
+	surname : "Hagrid",
+	date_of_birth : "1978-06-21",
+	gender : "male",
+	subjects : [ 
+		{name : "care of magical creatures"}]
+}
+])
+
+---- CLASSES ----------------------------------------
+
+db.classes.insertMany([
+{
+	name : "transfiguration",
+	teacher : { name : "Minerva", surname : "McGonagall" },
+	year : [1, 2, 3],
+	scheduled : [{ 
+		day : "Tuesday",
+		hour : "11:00",
+		place : "room 11" }]
+},
+{
+	name : "advanced transfiguration",
+	teacher : { name : "Minerva", surname : "McGonagall" },
+	year : [4, 5, 6, 7],
+	scheduled : [
+		{ 
+		day : "Wednesday",
+		hour : "09:00",
+		place : "room 11" },
+		{ 
+		day : "Friday",
+		hour : "13:00",
+		place : "room 11" },
+		]
+},
+{
+	name : "potions",
+	teacher : { name : "Severus", surname : "Snape" },
+	year : [1, 2, 3, 4, 5],
+	scheduled : [{ 
+		day : "Monday",
+		hour : "16:00",
+		place : "room 9" }]
+},
+{
+	name : "herbology",
+	teacher : { name : "Pomona", surname : "Sprout" },
+	year : [2, 3, 4, 5],
+	scheduled : [{ 
+		day : "Monday",
+		hour : "10:00",
+		place : "greenhouse 1" },
+		{ 
+		day : "Thursday",
+		hour : "13:00",
+		place : "greenhouse 2" }]
+},
+{
+	name : "defence against the dark arts",
+	teacher : { name : "Severus", surname : "Snape" },
+	year : [1, 2, 3, 4, 5, 6, 7],
+	scheduled : [{ 
+		day : "Friday",
+		hour : "09:00",
+		place : "room 3" },
+		{ 
+		day : "Thursday",
+		hour : "09:00",
+		place : "room 3" }]
+},
+{
+	name : "charms",
+	teacher : { name : "Filius", surname : "Flitwick" },
+	year : [1, 2, 3, 4],
+	scheduled : [{ 
+		day : "Wednesday",
+		hour : "14:00",
+		place : "room 10" }]
+},
+{
+	name : "advanced charms",
+	teacher : { name : "Filius", surname : "Flitwick" },
+	year : [5, 6, 7],
+	scheduled : [{ 
+		day : "Wednesday",
+		hour : "17:00",
+		place : "room 10" }]
+},
+{
+	name : "history of magic",
+	teacher : { name : "Cuthbert", surname : "Binns" },
+	year : [1, 2, 3],
+	scheduled : [{ 
+		day : "Tuesday",
+		hour : "14:00",
+		place : "room 7" }]
+},
+{
+	name : "care of magical creatures",
+	teacher : { name : "Rubeus", surname : "Hagrid" },
+	year : [4, 5, 6],
+	scheduled : [{ 
+		day : "Tuesday",
+		hour : "14:00",
+		place : "Forbidden Forest" }]
+}
+])
+
+---- HOUSES ----------------------------------------
+
+db.houses.insertMany([
+{
+	name : "Gryffindor",
+	founder : 
+		{name : "Godryk", surname : "Gryffindor" },
+	head : 
+		{name : "Minerva", surname : "McGonagall" },
+	animal : "lion"	
+},
+{
+	name : "Slytherin",
+	founder : 
+		{name : "Salazar", surname : "Slytherin" },
+	head : 
+		{name : "Severus", surname : "Snape" },
+	animal : "snake"	
+},
+{
+	name : "Hufflepuff",
+	founder : 
+		{name : "Helga", surname : "Hufflepuff" },
+	head : 
+		{name : "Pomona", surname : "Sprout" },
+	animal : "badger"	
+},
+{
+	name : "Ravenclaw",
+	founder : 
+		{name : "Rowena", surname : "Ravenclaw" },
+	head : 
+		{name : "Filius", surname : "Flitwick" },
+	animal : "eagle"	
+}
+])

@@ -1,0 +1,93 @@
+1 [ = numer karty w terminalu]    Conf server
+mongod --configsvr --port 27020 --dbpath .\data\hpconf --replSet confSet
+mongosh --port 27020 
+------------------------------------------------------------------------
+rs.initiate({_id:"confSet", configsvr: true, members: [{_id: 0, host: "127.0.0.1:27020"}]})
+rs.conf()
+
+2    1st shard master
+mongod --shardsvr --replSet shard1Set --dbpath .\data\hp01 --port 27021
+mongosh --port 27021
+-----------------------------------------------------------------------
+rs.initiate( { _id: "shard1Set", members: [ { _id: 0, host: "127.0.0.1:27021"}]})
+rs.conf()
+
+
+3    1st shard replica1
+mongod --replSet shard1Set --dbpath .\data\hp02 --port 27030
+mongosh --port 27030
+
+4    1st shard replica2
+mongod --replSet shard1Set --dbpath .\data\hp03 --port 27031
+mongosh --port 27031
+
+5    1st shard nonvoting hidden
+mongod --replSet shard1Set --dbpath .\data\hp04 --port 27032
+mongosh --port 27032
+
+2   1st shard replica set (master)
+rs.add('127.0.0.1:27030')
+rs.add('127.0.0.1:27031')
+rs.add('127.0.0.1:27032')
+cfg=rs.conf()
+cfg.members[3].priority=0
+cfg.members[3].votes=0
+cfg.members[3].hidden=true
+rs.reconfig(cfg)
+
+======================================================================================================
+
+6    2nd shard master
+mongod --shardsvr --replSet shard2Set --dbpath .\data\hp11 --port 27022
+mongosh --port 27022
+-----------------------------------------------------------------------
+rs.initiate( { _id: "shard2Set", members: [ { _id: 0, host: "127.0.0.1:27022"}]})
+rs.conf()
+
+7    2nd  shard replica1
+mongod --replSet shard2Set --dbpath .\data\hp12 --port 27040
+mongosh --port 27040
+
+8    2nd  shard replica2
+mongod --replSet shard2Set --dbpath .\data\hp13 --port 27041
+mongosh --port 27041
+
+9    2nd  shard nonvoting hidden
+mongod --replSet shard2Set --dbpath .\data\hp14 --port 27042
+mongosh --port 27042
+
+6   2nd shard replica set (master)
+rs.add('127.0.0.1:27040')
+rs.add('127.0.0.1:27041')
+rs.add('127.0.0.1:27042')
+cfg=rs.conf()
+cfg.members[3].priority=0
+cfg.members[3].votes=0
+cfg.members[3].hidden=true
+rs.reconfig(cfg)
+
+10    Router
+mongos --configdb confSet/127.0.0.1:27020 --port 27017
+mongosh
+-------------------------------------------------------
+sh.addShard( "shard1Set/127.0.0.1:27021")
+sh.addShard( "shard2Set/127.0.0.1:27022") 
+
+sh.enableSharding("Hogwarts")
+use Hogwarts
+
+db.students.createIndex({year:4})
+sh.shardCollection("Hogwarts.students",{year:1})
+
+sh.addShardToZone("shard1Set", "YearZone1")
+sh.updateZoneKeyRange("Hogwarts.students", { year: MinKey() }, { year: 4 }, "YearZone1")
+
+sh.addShardToZone("shard2Set", "YearZone2")
+sh.updateZoneKeyRange("Hogwarts.students", { year: 4 }, { year: MaxKey() }, "YearZone2")
+
+//update documents
+db.students.find()
+db.teachers.find()
+db.classes.find()
+db.houses.find()
+

@@ -1,0 +1,20 @@
+Find classes for year 3 that start before noon (12:00) and sort them alphabetically
+
+	db.classes.find( {$and : [{"scheduled.hour" : {$lt : "12:00"}}, {year : {$elemMatch : {$gt : 2, $lt: 4} } }  ]}, {"_id" : 0, name: 1, teacher : 1, scheduled : {$elemMatch : {hour : {$lt : "12:00"}}}}).sort({"name": 1})
+
+
+For each student find their average grade from all subjects
+
+	 db.students.aggregate( [ {$unwind: "$classes"}, {$unwind : "$classes.grades"}, {$group : { _id : {name : "$name", surname : "$surname"}, avg_grade : {$avg : "$classes.grades"}}}, {$project : {avg_grade : {$round : ["$avg_grade", 2]}}} ]).sort({"_id.surname" : 1})
+
+
+For each teacher find subjects they teach (one teacher can teach many subjects) and for each subject find number of scheduled classes (one subjects can be scheduled for many days)
+
+	db.teachers.aggregate([{$lookup : {from : "classes", localField : "subjects.name", foreignField : "name", as : "d1"}}, {$unwind : "$d1"}, {$unwind : "$d1.scheduled"}, {$group: {_id : { name : "$name", surname : "$surname", subject : "$d1.name"}, num_of_classes : {$sum : 1}}}]).sort({"_id.surname" : 1})
+
+
+For each house retrieve number of house points (sum of all grades of all students of that house) and information about name of head of the house. Sort the houses from the biggest number of points.
+
+	db.houses.aggregate([ {$lookup : {from : "students", localField : "name", foreignField : "house", as : "students"}}, {$unwind : "$students"}, {$unwind : "$students.classes"}, {$unwind : "$students.classes.grades"}, {$group : {_id : "$name", head : {"$first" : {$concat : ["$head.name", " ", "$head.surname" ]}}, sum_of_points : {$sum : "$students.classes.grades"}}}, {$project : {_id : 1, sum_of_points : 1, head : 1}}]).sort({ "sum_of_points" : -1 })	
+	
+

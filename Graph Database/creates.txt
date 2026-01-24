@@ -1,0 +1,77 @@
+CREATE (n:CUSTOMER:WOMAN {dateOfBirth:date("2019-09-10") ,name:'Jessica'});
+ 
+CREATE (n:CUSTOMER:WOMAN {dateOfBirth:date("2000-09-10") ,name:'Mary'});
+ 
+CREATE (n:CUSTOMER:MAN {dateOfBirth:date("2000-09-10") ,name:'Bill'});
+ 
+CREATE (n:CUSTOMER:MAN {dateOfBirth:date("1998-09-10") ,name:'Jack'});
+ 
+CREATE (n:SHOP {name:'Lidl', pricesRange:'medium'});
+ 
+CREATE (n:SHOP {name:'Walmart', pricesRange:'low'});
+ 
+CREATE (n:PRODUCT:FRUIT {name:'Orange'});
+ 
+CREATE (n:PRODUCT:FRUIT {name:'Apple'});
+ 
+CREATE (n:PRODUCT:FRUIT {name:'Pear'});
+CREATE (n:PRODUCT:VEGATABLE {name:'Carrot'});
+ 
+CREATE (n:PRODUCT:VEGATABLE {name:'Ginger'});
+ 
+CREATE (n:PRODUCT:VEGATABLE {name:'Cucumber'});
+ 
+MATCH (m:SHOP),(n:PRODUCT:VEGATABLE)
+WHERE m.name = 'Lidl' AND n.name = 'Carrot'
+   CREATE (m)-[:SELLS { price:7, quantity_on_stock:222}]->(n)
+RETURN m,n;
+ 
+MATCH (m:SHOP),(n:PRODUCT:VEGATABLE)
+WHERE m.name = 'Lidl' AND n.name = 'Cucumber'
+   CREATE (m)-[:SELLS { price:3, quantity_on_stock:1110}]->(n)
+RETURN m,n;
+ 
+MATCH (m:SHOP),(n:PRODUCT:VEGATABLE)
+WHERE m.name = 'Walmart' AND n.name = 'Ginger'
+   CREATE (m)-[:SELLS { price:33, quantity_on_stock:10}]->(n)
+RETURN m,n;
+ 
+MATCH (m:SHOP),(n:PRODUCT:VEGATABLE)
+WHERE m.name = 'Walmart' AND n.name = 'Carrot'
+   CREATE (m)-[:SELLS { price:11, quantity_on_stock:220}]->(n)
+RETURN m,n;
+ 
+MATCH (m:SHOP),(n:PRODUCT:FRUIT)
+WHERE m.name = 'Walmart' AND n.name = 'Pear'
+   CREATE (m)-[:SELLS { price:2, quantity_on_stock:20}]->(n)
+RETURN m,n;
+ 
+MATCH (m:SHOP),(n:PRODUCT:FRUIT)
+WHERE m.name = 'Walmart' AND n.name = 'Orange'
+   CREATE (m)-[:SELLS { price:6, quantity_on_stock:420}]->(n)
+RETURN m,n;
+ 
+MATCH (m:SHOP),(n:PRODUCT:FRUIT)
+WHERE m.name = 'Lidl' AND n.name = 'Apple'
+   CREATE (m)-[:SELLS { price:126, quantity_on_stock:440}]->(n)
+RETURN m,n;
+ 
+MATCH (m:CUSTOMER:WOMAN),(n:PRODUCT:FRUIT)
+WHERE m.name = 'Jessica' AND n.name = 'Orange'
+   CREATE (m)-[:BUYS {quantity_bought:4, purchase_date:date("2022-09-24"), shop_name:'Lidl'}]->(n)
+RETURN m,n;
+ 
+MATCH (m:CUSTOMER:WOMAN),(n:PRODUCT:FRUIT)
+WHERE m.name = 'Mary' AND n.name = 'Orange'
+   CREATE (m)-[:BUYS {quantity_bought:1, purchase_date:date("2022-09-24"), shop_name:'Lidl'}]->(n)
+RETURN m,n;
+ 
+MATCH (m:CUSTOMER:MAN),(n:PRODUCT:VEGATABLE)
+WHERE m.name = 'Jack' AND n.name = 'Cucumber'
+   CREATE (m)-[:BUYS {quantity_bought:33, purchase_date:date("2022-09-22"), shop_name:'Lidl'}]->(n)
+RETURN m,n;
+ 
+MATCH (m:CUSTOMER:MAN),(n:PRODUCT:VEGATABLE)
+WHERE m.name = 'Bill' AND n.name = 'Carrot'
+   CREATE (m)-[:BUYS {quantity_bought:2, purchase_date:date("2022-09-30"), shop_name:'Walmart'}]->(n)
+RETURN m,n;

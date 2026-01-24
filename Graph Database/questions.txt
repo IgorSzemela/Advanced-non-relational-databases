@@ -1,0 +1,48 @@
+What is the average age of orange customers?
+MATCH (c:CUSTOMER)-[:BUYS]->(p:PRODUCT) 
+WHERE p.name = "Orange" 
+RETURN avg(date().year - c.dateOfBirth.year)
+ 
+What is the most popular product among men?
+MATCH (m:MAN)-[:BUYS]->(p:PRODUCT) 
+RETURN m.name, p.name, count(p) 
+ORDER BY count(p) DESC
+
+What is the product that Jack buys the most?
+MATCH (m:MAN)-[:BUYS]->(p:PRODUCT) 
+WHERE m.name = "Jack"
+RETURN m.name, p.name, count(p)
+ORDER BY count(p) DESC LIMIT 1
+
+How many carrots were bought?
+MATCH (c:CUSTOMER)-[b:BUYS]->(p:PRODUCT) 
+WHERE p.name = "Carrot" RETURN p.name, sum(b.quantity_bought)
+
+Which shop sold more types of products?
+MATCH (c:CUSTOMER)-[:BUYS]->(p:PRODUCT)<-[:SELLS]-(s:SHOP) 
+RETURN s.name, count(p), p.name
+
+Which shop has the highest average customer age?
+MATCH (c:CUSTOMER)-[:BUYS]->(p:PRODUCT)<-[:SELLS]-(s:SHOP) 
+RETURN s.name, avg(date().year - c.dateOfBirth.year)
+ORDER BY avg(date().year - c.dateOfBirth.year) DESC LIMIT 1
+
+Which shop has the most male customers?
+MATCH (m:MAN:CUSTOMER)-[:BUYS]->(p:PRODUCT)<-[:SELLS]-(s:SHOP) 
+RETURN s.name, count(m)
+ORDER BY count(m) DESC LIMIT 1
+
+What is the amount of oranges sold by Lidl?
+MATCH (c:CUSTOMER)-[b:BUYS]->(p:PRODUCT)
+WHERE b.shop_name = "Lidl" AND p.name = "Orange"
+RETURN b.shop_name, sum(b.quantity_bought)
+
+Which customer bought the biggest amount of products?
+MATCH (c:CUSTOMER)-[b:BUYS]->(p:PRODUCT)
+RETURN c.name, sum(b.quantity_bought)
+ORDER BY sum(b.quantity_bought) DESC LIMIT 1
+
+Who bought the biggest amount of vegetables?
+MATCH (c:CUSTOMER)-[b:BUYS]->(p:PRODUCT:VEGATABLE)
+RETURN c.name, sum(b.quantity_bought)
+ORDER BY sum(b.quantity_bought) DESC LIMIT 1

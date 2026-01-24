@@ -1,0 +1,15 @@
+MATCH (u:PRODUCT:FRUIT)
+RETURN u.name AS name,
+size((u)<-[:BUYS]-()) AS buyers
+
+
+MATCH (n)-[]->(z)-[]->(n)
+RETURN count(n)
+
+
+MATCH (p1:SHOP {name: 'Walmart'})-[:SELLS]->(s1)
+WITH p1, collect(id(s1)) AS p1s
+MATCH (p2:SHOP)-[:SELLS]->(s2) WHERE p1 <> p2
+WITH p1, p1s, p2, collect(id(s2)) AS p2s
+RETURN p1.name AS from, p2.name AS to,
+   gds.similarity.jaccard(p1s, p2s) AS jaccard; 
