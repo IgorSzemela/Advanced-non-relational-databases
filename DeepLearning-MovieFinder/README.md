@@ -1,5 +1,3 @@
-Team project for advanced non-relational databases course done at university.
-
 ## Project Goal
 This project helps people find movies they might like by using deep learning. It uses movie data and user ratings to recommend films.
 
